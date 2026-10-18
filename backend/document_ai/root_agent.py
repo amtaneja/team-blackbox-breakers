@@ -2,10 +2,13 @@
 
 import asyncio
 import json
-import urllib.error
-import urllib.request
 import uuid
 from typing import Any
+
+import google.auth
+from google.auth.exceptions import GoogleAuthError
+from google.auth.transport.requests import AuthorizedSession
+from requests.exceptions import RequestException
 
 
 class RootAgentError(Exception):
@@ -40,16 +43,15 @@ def _send_to_agent(url: str, prompt: str) -> dict[str, str]:
             }
         },
     }
-    request = urllib.request.Request(
-        url,
-        data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
     try:
-        with urllib.request.urlopen(request, timeout=90) as response:
-            response_data = json.loads(response.read())
-    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as error:
+        credentials, _ = google.auth.default(
+            scopes=["https://www.googleapis.com/auth/cloud-platform"]
+        )
+        with AuthorizedSession(credentials) as session:
+            response = session.post(url, json=payload, timeout=90)
+            response.raise_for_status()
+            response_data = response.json()
+    except (GoogleAuthError, RequestException, TimeoutError, ValueError) as error:
         raise RootAgentError("Root agent request failed") from error
 
     if "error" in response_data:

@@ -1,0 +1,10 @@
+.env
+.venv
+**/.env
+**/.venv
+__pycache__
+**/__pycache__
+*.py[cod]
+.git
+docs
+document_ai/sample_data

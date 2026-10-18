@@ -3,10 +3,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Blackbox Breakers",
-    template: "%s | Blackbox Breakers",
+    default: "Auditly | Invoice and PO Review",
+    template: "%s | Auditly",
   },
-  description: "Turn complexity into clarity with Blackbox Breakers.",
+  description: "Auditly extracts invoice and purchase order details from labeled emails and creates comparison summaries for review.",
 };
 
 export default function RootLayout({

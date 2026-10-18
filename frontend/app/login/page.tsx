@@ -41,7 +41,7 @@ export default function LoginPage() {
 
   return (
     <main className="auth-page">
-      <Link className="brand auth-brand" href="/" aria-label="Blackbox home"><span className="brand-mark">b.</span><span>blackbox<span className="brand-light">breakers</span></span></Link>
+      <Link className="brand auth-brand" href="/" aria-label="Auditly home"><span className="brand-mark">A</span><span>auditly</span></Link>
       <section className="auth-card">
         <div className="auth-heading"><p className="kicker">WELCOME BACK</p><h1>Good to see<br />you again.</h1><p>Sign in to pick up where you left off.</p></div>
         <form className="login-form" onSubmit={handleSubmit}>
@@ -53,7 +53,7 @@ export default function LoginPage() {
         </form>
         <div className="auth-demo"><p>Use the demo account</p><code>demo@blackboxbreakers.com</code><code>breaker2026</code></div>
       </section>
-      <p className="auth-footer"><Link href="/">← Back to home</Link><span>© 2026 Blackbox Breakers</span></p>
+      <p className="auth-footer"><Link href="/">← Back to home</Link><span>© 2026 Auditly</span></p>
     </main>
   );
 }

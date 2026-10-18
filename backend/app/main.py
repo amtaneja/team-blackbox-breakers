@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # importing router
 from app.api.v1.endpoints.documents import router as documents_router
 from app.api.v1.endpoints.comparison import router as comparison_router
+from app.api.v1.endpoints.inference import router as inference_router
 # Creating the app for our application
 app = FastAPI(
     title="Auditly",
@@ -25,6 +26,7 @@ app.add_middleware(
 # Register document management endpoints under the v1 API prefix
 app.include_router(documents_router, prefix="/api/v1")
 app.include_router(comparison_router, prefix="/api/v1")
+app.include_router(inference_router, prefix="/api/v1")
 
 # health check endpoint
 @app.get("/health", tags=["health"])

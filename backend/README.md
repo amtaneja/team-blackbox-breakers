@@ -32,6 +32,40 @@ uv run uvicorn app.main:app --reload
 
 Open `http://127.0.0.1:8000/docs` for interactive API documentation. Liveness is available at `GET /health`.
 
+## Deploy the FastAPI service to Cloud Run
+
+`deploy.sh` builds the backend from `Dockerfile` and deploys it as a Cloud Run
+service. From the `backend` directory, set the project, runtime service
+account, and the deployed root-agent A2A URL before running it:
+
+```sh
+export PROJECT_ID=project-c7b154e5-95da-4f50-a5b
+export REGION=us-central1
+export RUNTIME_SERVICE_ACCOUNT=YOUR_BACKEND_RUNTIME_SERVICE_ACCOUNT
+export ROOT_AGENT_URL=https://YOUR_ROOT_AGENT_HOST/a2a/app
+./deploy.sh
+```
+
+The runtime service account needs `roles/documentai.apiUser` on the project.
+The dashboard overview reads `GET /api/v1/inference` from the `inference`
+collection in Firestore database `auditly-db`. The runtime service account also
+needs `roles/datastore.user`; set `FIRESTORE_DATABASE_ID` to override the
+database name. Set the frontend's `NEXT_PUBLIC_API_BASE_URL` to the backend API
+base URL ending in `/api/v1`.
+The script defaults to a private Cloud Run service. To allow unauthenticated
+requests, set `ALLOW_UNAUTHENTICATED=true` before deploying. The current FastAPI
+app has no request authentication, so public access also makes its PDF
+processing endpoints available to anyone who can reach the service. The
+dashboard's browser-side fetch works only when the backend is browser-reachable
+and its `FRONTEND_ORIGINS` includes the frontend origin. For a private service,
+serve the request through a frontend server-side proxy that adds a Cloud Run
+ID token; do not expose the private service URL directly to the browser.
+
+After deployment, the script prints the service URL and its invoice,
+purchase-order, and comparison endpoint URLs. Set those URLs in
+`integrations/gmail_invoice_function/deploy.sh` before deploying the email
+function.
+
 ## Upload a PDF
 
 ```bash
