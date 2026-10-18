@@ -47,11 +47,11 @@ export default function InferenceOverview() {
           <p>Summaries from invoices matched against their purchase orders.</p>
         </div>
         <button className="button button-dark inference-refresh" onClick={() => void loadRecords()} disabled={loading}>
-          {loading ? "Loading…" : "Refresh"}
+          {loading ? <><span className="circular-loader" aria-hidden="true" /><span>Loading…</span></> : "Refresh"}
         </button>
       </div>
 
-      {loading && records.length === 0 && <p className="inference-state" role="status">Loading comparison summaries…</p>}
+      {loading && records.length === 0 && <p className="inference-state inference-loading" role="status"><span className="circular-loader" aria-hidden="true" />Loading comparison summaries…</p>}
       {!loading && error && <div className="inference-state inference-error" role="alert"><span>{error}</span><button onClick={() => void loadRecords()}>Try again</button></div>}
       {!loading && !error && records.length === 0 && <p className="inference-state">No comparison summaries yet. They will appear here after an invoice is matched with a purchase order.</p>}
 

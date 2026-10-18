@@ -5,8 +5,6 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 SERVICE_NAME="${SERVICE_NAME:-auditly-frontend}"
 REGION="${REGION:-us-central1}"
 API_BASE_URL="${API_BASE_URL:-https://auditly-backend-xr2oaad7sa-uc.a.run.app/api/v1}"
-DEMO_EMAIL_SECRET="${DEMO_EMAIL_SECRET:-auditly-demo-email}"
-DEMO_PASSWORD_SECRET="${DEMO_PASSWORD_SECRET:-auditly-demo-password}"
 SESSION_SECRET_SECRET="${SESSION_SECRET_SECRET:-auditly-session-secret}"
 RUNTIME_SERVICE_ACCOUNT="${RUNTIME_SERVICE_ACCOUNT:-}"
 
@@ -39,7 +37,7 @@ gcloud run deploy "$SERVICE_NAME" \
   --timeout 900 \
   --memory 1Gi \
   --set-env-vars "BACKEND_URL=${API_BASE_URL}" \
-  --set-secrets "AUDITLY_DEMO_EMAIL=${DEMO_EMAIL_SECRET}:latest,AUDITLY_DEMO_PASSWORD=${DEMO_PASSWORD_SECRET}:latest,AUDITLY_SESSION_SECRET=${SESSION_SECRET_SECRET}:latest" \
+  --set-secrets "AUDITLY_SESSION_SECRET=${SESSION_SECRET_SECRET}:latest" \
   ${deploy_args[@]+"${deploy_args[@]}"}
 
 SERVICE_URL="$(gcloud run services describe "$SERVICE_NAME" \
