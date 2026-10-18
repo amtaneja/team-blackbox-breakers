@@ -46,12 +46,11 @@ export default function LoginPage() {
         <div className="auth-heading"><p className="kicker">WELCOME BACK</p><h1>Good to see<br />you again.</h1><p>Sign in to pick up where you left off.</p></div>
         <form className="login-form" onSubmit={handleSubmit}>
           <label htmlFor="email">Email address</label><input id="email" name="email" type="email" placeholder="you@company.com" autoComplete="username" required />
-          <div className="password-label"><label htmlFor="password">Password</label><span className="demo-label">DEMO ACCOUNT</span></div>
+          <div className="password-label"><label htmlFor="password">Password</label></div>
           <input id="password" name="password" type="password" placeholder="Enter your password" autoComplete="current-password" required />
           {error && <p className="login-error" role="alert">{error}</p>}
           <button className="button button-dark login-submit" type="submit" disabled={isSubmitting}>{isSubmitting ? "Signing in…" : <>Sign in <span aria-hidden="true">→</span></>}</button>
         </form>
-        <div className="auth-demo"><p>Use the demo account</p><code>demo@blackboxbreakers.com</code><code>breaker2026</code></div>
       </section>
       <p className="auth-footer"><Link href="/">← Back to home</Link><span>© 2026 Auditly</span></p>
     </main>

@@ -50,16 +50,16 @@ The runtime service account needs `roles/documentai.apiUser` on the project.
 The dashboard overview reads `GET /api/v1/inference` from the `inference`
 collection in Firestore database `auditly-db`. The runtime service account also
 needs `roles/datastore.user`; set `FIRESTORE_DATABASE_ID` to override the
-database name. Set the frontend's `NEXT_PUBLIC_API_BASE_URL` to the backend API
-base URL ending in `/api/v1`.
+database name. Set the frontend's server-only `BACKEND_URL` to the backend API
+base URL ending in `/api/v1`; do not expose it as a `NEXT_PUBLIC_` variable.
 The script defaults to a private Cloud Run service. To allow unauthenticated
 requests, set `ALLOW_UNAUTHENTICATED=true` before deploying. The current FastAPI
-app has no request authentication, so public access also makes its PDF
-processing endpoints available to anyone who can reach the service. The
-dashboard's browser-side fetch works only when the backend is browser-reachable
-and its `FRONTEND_ORIGINS` includes the frontend origin. For a private service,
-serve the request through a frontend server-side proxy that adds a Cloud Run
-ID token; do not expose the private service URL directly to the browser.
+app has no user authentication, so public access also makes its PDF processing
+and inference data available to anyone who can reach the service. Keep the
+backend private. The frontend server proxy obtains a Cloud Run ID token from
+its runtime service account; grant that account `roles/run.invoker` on the
+backend service. The Gmail function also needs `roles/run.invoker` on the
+backend service.
 
 After deployment, the script prints the service URL and its invoice,
 purchase-order, and comparison endpoint URLs. Set those URLs in

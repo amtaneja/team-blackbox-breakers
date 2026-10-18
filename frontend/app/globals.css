@@ -62,6 +62,9 @@
 .inference-detail-metadata>div{min-width:0}
 .inference-detail-metadata dt{margin-bottom:4px;color:#85858c;font-size:var(--type-label)}
 .inference-detail-metadata dd{margin:0;color:#494951;font-size:var(--type-secondary);overflow-wrap:anywhere}
+.inference-pdf-link{color:#5949a0;font-weight:600;text-decoration:none}
+.inference-pdf-link:hover{text-decoration:underline}
+.inference-pdf-link:focus-visible{border-radius:3px;outline:2px solid #7862c9;outline-offset:3px}
 .inference-detail-summary{padding:22px;border:1px solid #ecebea;border-radius:8px;background:#fff;color:#484951;font-size:var(--type-body);line-height:1.65;overflow-wrap:anywhere}
 .inference-detail-summary>:first-child{margin-top:0}
 .inference-detail-summary>:last-child{margin-bottom:0}

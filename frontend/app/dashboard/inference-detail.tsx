@@ -39,8 +39,8 @@ export default function InferenceDetail({ record, onBack }: Props) {
       <dl className="inference-detail-metadata">
         <div><dt>Email from</dt><dd>{record.email_from || "Not available"}</dd></div>
         <div><dt>Email subject</dt><dd>{record.email_subject || "Not available"}</dd></div>
-        <div><dt>Invoice PDF</dt><dd>{record.invoice_file_link || "Not available"}</dd></div>
-        <div><dt>Purchase order PDF</dt><dd>{record.po_file_link || "Not available"}</dd></div>
+        <div><dt>Invoice PDF</dt><dd><StoragePdfLink uri={record.invoice_file_link} label="Open invoice PDF" /></dd></div>
+        <div><dt>Purchase order PDF</dt><dd><StoragePdfLink uri={record.po_file_link} label="Purchase order PDF" /></dd></div>
       </dl>
 
       <article className="inference-detail-summary">
@@ -50,6 +50,27 @@ export default function InferenceDetail({ record, onBack }: Props) {
       </article>
     </section>
   );
+}
+
+function StoragePdfLink({ uri, label }: { uri?: string | null; label: string }) {
+  const href = toAuthenticatedStorageUrl(uri);
+  if (!href) return <>Not available</>;
+
+  return (
+    <a className="inference-pdf-link" href={href} target="_blank" rel="noopener noreferrer">
+      {label} <span aria-hidden="true">↗</span>
+    </a>
+  );
+}
+
+function toAuthenticatedStorageUrl(uri?: string | null) {
+  if (!uri) return null;
+  const match = /^gs:\/\/([^/]+)\/(.+)$/.exec(uri);
+  if (!match) return null;
+
+  const [, bucket, objectPath] = match;
+  const encodedObjectPath = objectPath.split("/").map(encodeURIComponent).join("/");
+  return `https://storage.cloud.google.com/${encodeURIComponent(bucket)}/${encodedObjectPath}`;
 }
 
 function formatTimestamp(value: string | null) {

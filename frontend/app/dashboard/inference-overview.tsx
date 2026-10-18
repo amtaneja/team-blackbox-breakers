@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import InferenceDetail, { type InferenceRecord } from "./inference-detail";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+const API_BASE = "/api/backend";
 
 export default function InferenceOverview() {
   const [records, setRecords] = useState<InferenceRecord[]>([]);
@@ -24,7 +24,7 @@ export default function InferenceOverview() {
       setRecords(body.items ?? []);
     } catch (loadError) {
       setError(loadError instanceof TypeError
-        ? `Cannot reach the backend at ${API_BASE}.`
+        ? "Cannot reach the backend. Please try again."
         : loadError instanceof Error ? loadError.message : "Could not load inference records.");
     } finally {
       setLoading(false);
