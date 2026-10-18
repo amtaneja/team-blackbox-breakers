@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+const API_BASE = "/api/backend";
 
 export default function DocumentMatch() {
   const [invoice, setInvoice] = useState<File | null>(null);
@@ -62,7 +62,7 @@ export default function DocumentMatch() {
       setStatus("Comparison complete");
     } catch (error) {
       setStatus(error instanceof TypeError
-        ? `Cannot reach the backend at ${API_BASE}. Start the backend API and try again.`
+        ? "Cannot reach the backend. Please try again."
         : error instanceof Error ? error.message : "Comparison failed. Please try again.");
     } finally {
       setBusy(false);

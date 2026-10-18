@@ -1,0 +1,5 @@
+.venv/
+gmail-oauth.json
+credentials.json
+.env.local
+deploy.sh

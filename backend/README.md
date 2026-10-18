@@ -32,6 +32,40 @@ uv run uvicorn app.main:app --reload
 
 Open `http://127.0.0.1:8000/docs` for interactive API documentation. Liveness is available at `GET /health`.
 
+## Deploy the FastAPI service to Cloud Run
+
+`deploy.sh` builds the backend from `Dockerfile` and deploys it as a Cloud Run
+service. From the `backend` directory, set the project, runtime service
+account, and the deployed root-agent A2A URL before running it:
+
+```sh
+export PROJECT_ID=project-c7b154e5-95da-4f50-a5b
+export REGION=us-central1
+export RUNTIME_SERVICE_ACCOUNT=YOUR_BACKEND_RUNTIME_SERVICE_ACCOUNT
+export ROOT_AGENT_URL=https://YOUR_ROOT_AGENT_HOST/a2a/app
+./deploy.sh
+```
+
+The runtime service account needs `roles/documentai.apiUser` on the project.
+The dashboard overview reads `GET /api/v1/inference` from the `inference`
+collection in Firestore database `auditly-db`. The runtime service account also
+needs `roles/datastore.user`; set `FIRESTORE_DATABASE_ID` to override the
+database name. Set the frontend's server-only `BACKEND_URL` to the backend API
+base URL ending in `/api/v1`; do not expose it as a `NEXT_PUBLIC_` variable.
+The script defaults to a private Cloud Run service. To allow unauthenticated
+requests, set `ALLOW_UNAUTHENTICATED=true` before deploying. The current FastAPI
+app has no user authentication, so public access also makes its PDF processing
+and inference data available to anyone who can reach the service. Keep the
+backend private. The frontend server proxy obtains a Cloud Run ID token from
+its runtime service account; grant that account `roles/run.invoker` on the
+backend service. The Gmail function also needs `roles/run.invoker` on the
+backend service.
+
+After deployment, the script prints the service URL and its invoice,
+purchase-order, and comparison endpoint URLs. Set those URLs in
+`integrations/gmail_invoice_function/deploy.sh` before deploying the email
+function.
+
 ## Upload a PDF
 
 ```bash
