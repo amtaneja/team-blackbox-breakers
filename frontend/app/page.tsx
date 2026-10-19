@@ -4,13 +4,12 @@ export default function Home() {
   return (
     <main className="landing">
       <nav className="topbar shell" aria-label="Main navigation">
-        <Link className="brand" href="/" aria-label="Auditly home">
+        <div className="brand" aria-label="Auditly">
           <span className="brand-mark">A</span><span>auditly</span>
-        </Link>
+        </div>
         <div className="nav-links">
           <a href="#how-it-works">How it works</a>
           <Link className="nav-login" href="/login">Sign in</Link>
-          <Link className="button button-small button-dark" href="/login">Open dashboard <span>↗</span></Link>
         </div>
       </nav>
 

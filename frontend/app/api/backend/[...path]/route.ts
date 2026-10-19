@@ -32,7 +32,11 @@ async function proxy(request: NextRequest, context: RouteContext) {
     return NextResponse.json({ detail: "Method not allowed." }, { status: 405 });
   }
 
-  const backendBase = (process.env.BACKEND_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1").replace(/\/$/, "");
+  const configuredBackendUrl = process.env.BACKEND_URL;
+  if (!configuredBackendUrl) {
+    return NextResponse.json({ detail: "Backend URL is not configured." }, { status: 503 });
+  }
+  const backendBase = configuredBackendUrl.replace(/\/$/, "");
   const target = `${backendBase}/${route}`;
   const headers = new Headers();
   const contentType = request.headers.get("content-type");

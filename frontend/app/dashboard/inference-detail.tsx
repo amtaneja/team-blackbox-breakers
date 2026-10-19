@@ -81,5 +81,9 @@ function formatTimestamp(value: string | null) {
 
 function formatSummary(value: string) {
   // Convert HTML break tags used in generated table cells into safe text separators.
-  return value.replace(/\\?<br\s*\/?\s*>/gi, " · ");
+  // Some stored agent summaries put every Markdown table row on one line. Split
+  // the adjacent closing/opening pipes so GFM can recognize the table rows.
+  return value
+    .replace(/\\?<br\s*\/?\s*>/gi, " · ")
+    .replace(/\|\s+\|/g, "|\n|");
 }
